@@ -376,7 +376,7 @@ const emailTemplates = {
           </div>
 
           <div style="text-align: center; margin: 30px 0;">
-            <a href="http://localhost:3000/admin/dashboard" class="action-button">View in Admin Dashboard</a>
+            <a href="https://www.carondesire.com/admin/dashboard" class="action-button">View in Admin Dashboard</a>
             <a href="mailto:${booking.email}" class="action-button" style="background: #28a745;">Contact Customer</a>
           </div>
 
@@ -409,7 +409,7 @@ const emailTemplates = {
 // SMS templates
 const smsTemplates = {
   bookingConfirmation: (booking) => 
-    `Thanks for choosing Car On Desire! Your tracking ID is ${booking.bookingId}. Track your booking status at: http://localhost:3000/booking/success?bookingId=${booking.bookingId}`,
+    `Thanks for choosing Car On Desire! Your tracking ID is ${booking.bookingId}. Track your booking status at: https://www.carondesire.com/booking/success?bookingId=${booking.bookingId}`,
 
   // No SMS for status updates - only email notifications
   statusUpdate: (booking, newStatus) => null
