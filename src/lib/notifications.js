@@ -253,6 +253,156 @@ const emailTemplates = {
       </div>
     </body>
     </html>
+  `,
+
+  adminNewBooking: (booking) => `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Booking Received</title>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .alert-box { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center; }
+        .booking-details { background: white; padding: 25px; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .detail-row { display: flex; justify-content: space-between; margin: 12px 0; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .detail-label { font-weight: bold; color: #666; min-width: 150px; }
+        .detail-value { color: #333; text-align: right; }
+        .total-price { background: #28a745; color: white; padding: 20px; border-radius: 8px; text-align: center; font-size: 24px; font-weight: bold; margin: 20px 0; }
+        .customer-info { background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
+        .action-button { display: inline-block; background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px 5px; font-weight: bold; }
+        .priority-high { background: #dc3545; }
+        .priority-medium { background: #ffc107; color: #333; }
+        .priority-low { background: #28a745; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🚗 New Booking Received!</h1>
+          <p>Car On Desire - Admin Notification</p>
+        </div>
+        <div class="content">
+          <div class="alert-box">
+            <h3>⚠️ Action Required</h3>
+            <p>A new booking has been received and requires your attention. Please review the details below and take appropriate action.</p>
+          </div>
+          
+          <div class="customer-info">
+            <h3>👤 Customer Information</h3>
+            <div class="detail-row">
+              <span class="detail-label">Name:</span>
+              <span class="detail-value">${booking.name}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email:</span>
+              <span class="detail-value">${booking.email}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Phone:</span>
+              <span class="detail-value">+91 ${booking.phone}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Booking Date:</span>
+              <span class="detail-value">${new Date(booking.bookingDate).toLocaleDateString('en-IN', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}</span>
+            </div>
+          </div>
+
+          <div class="booking-details">
+            <h3>📋 Booking Details</h3>
+            <div class="detail-row">
+              <span class="detail-label">Booking ID:</span>
+              <span class="detail-value"><strong>${booking.bookingId}</strong></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Status:</span>
+              <span class="detail-value"><span class="priority-high" style="padding: 4px 8px; border-radius: 4px; color: white; font-size: 12px;">PENDING</span></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Region:</span>
+              <span class="detail-value">${booking.region}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">From:</span>
+              <span class="detail-value">${booking.origin}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Duration:</span>
+              <span class="detail-value">${booking.duration}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Vehicle Type:</span>
+              <span class="detail-value">${booking.vehicleType}</span>
+            </div>
+            ${booking.travelDate ? `
+            <div class="detail-row">
+              <span class="detail-label">Travel Date:</span>
+              <span class="detail-value">${new Date(booking.travelDate).toLocaleDateString('en-IN')}</span>
+            </div>
+            ` : ''}
+            ${booking.passengerCount ? `
+            <div class="detail-row">
+              <span class="detail-label">Passengers:</span>
+              <span class="detail-value">${booking.passengerCount}</span>
+            </div>
+            ` : ''}
+            ${booking.comments ? `
+            <div class="detail-row">
+              <span class="detail-label">Comments:</span>
+              <span class="detail-value">${booking.comments}</span>
+            </div>
+            ` : ''}
+            ${booking.specialRequests ? `
+            <div class="detail-row">
+              <span class="detail-label">Special Requests:</span>
+              <span class="detail-value">${booking.specialRequests}</span>
+            </div>
+            ` : ''}
+          </div>
+
+          <div class="total-price">
+            Total Amount: ₹${booking.totalPrice.toLocaleString('en-IN')}
+          </div>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="http://localhost:3000/admin/dashboard" class="action-button">View in Admin Dashboard</a>
+            <a href="mailto:${booking.email}" class="action-button" style="background: #28a745;">Contact Customer</a>
+          </div>
+
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h4>📝 Next Steps:</h4>
+            <ul style="text-align: left; margin: 10px 0;">
+              <li>Review the booking details and customer requirements</li>
+              <li>Contact the customer within 24 hours to confirm availability</li>
+              <li>Update the booking status in the admin dashboard</li>
+              <li>Coordinate with the driver and vehicle assignment</li>
+            </ul>
+          </div>
+
+          <p><strong>Important:</strong> This booking is currently in PENDING status and requires immediate attention.</p>
+          
+          <div class="footer">
+            <p><strong>Car On Desire - Admin Panel</strong></p>
+            <p>📞 +91 93103 89959 | +91 70489 96401</p>
+            <p>📧 carondesire.delhi@gmail.com</p>
+            <p>🌐 www.carondesire.com</p>
+            <p style="margin-top: 15px; font-size: 12px; color: #999;">This is an automated notification. Please do not reply to this email.</p>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
   `
 };
 
@@ -408,11 +558,31 @@ export async function sendContactConfirmation(contact) {
   return results;
 }
 
+// Send admin notification for new booking
+export async function sendAdminNewBookingNotification(booking) {
+  try {
+    const adminEmail = 'carondesire.delhi@gmail.com';
+    const emailContent = emailTemplates.adminNewBooking(booking);
+    
+    const result = await sendEmail(
+      { email: adminEmail, name: 'Car On Desire Admin' },
+      `New Booking Received - ${booking.bookingId}`,
+      emailContent
+    );
+
+    console.log('📧 Admin notification result:', result);
+    return result;
+  } catch (error) {
+    console.error('❌ Admin notification error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 // Send booking confirmation notifications
 export async function sendBookingConfirmation(booking) {
-  const results = { email: null, sms: null };
+  const results = { email: null, sms: null, adminNotification: null };
 
-  // Send email
+  // Send email to customer
   const emailContent = emailTemplates.bookingConfirmation(booking);
   results.email = await sendEmail(
     { email: booking.email, name: booking.name },
@@ -420,9 +590,12 @@ export async function sendBookingConfirmation(booking) {
     emailContent
   );
 
-  // Send SMS
+  // Send SMS to customer
   const smsContent = smsTemplates.bookingConfirmation(booking);
   results.sms = await sendSMS(booking.phone, smsContent);
+
+  // Send admin notification
+  results.adminNotification = await sendAdminNewBookingNotification(booking);
 
   return results;
 }
@@ -467,6 +640,7 @@ export async function testBrevoSetup() {
     const results = await sendBookingConfirmation(testBooking);
     console.log("📧 Email result:", results.email);
     console.log("📱 SMS result:", results.sms);
+    console.log("🔔 Admin notification result:", results.adminNotification);
     
     // Test status update (email only)
     console.log("🔄 Testing status update (email only)...");
